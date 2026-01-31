@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#FFF8F0">
+    <title>Luma Café • Coffee, Calm & Conversations</title>
+    <meta name="description" content="A Gen-Z lifestyle café serving specialty coffee, matcha, and artisan bakes in a dreamy aesthetic space.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        :root {
+            --cream: #FFF8F0;
+            --peach: #FFE5D9;
+            --sage: #E8F3E8;
+            --soft-brown: #A68A77;
+            --warm-gray: #C9B8A8;
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --shadow-soft: 0 8px 32px rgba(166, 138, 119, 0.12);
+            --shadow-hover: 0 12px 48px rgba(166, 138, 119, 0.18);
+            --text-primary: #4A4A4A;
+            --text-secondary: #6B5D54;
+        }
+
+        [data-theme="dark"] {
+            --cream: #1a1a1a;
+            --peach: #2a2420;
+            --sage: #1f2620;
+            --soft-brown: #E8D4C0;
+            --warm-gray: #B8A898;
+            --glass-bg: rgba(50, 50, 50, 0.5);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.4);
+            --text-primary: #F5F5F5;
+            --text-secondary: #E0D0C0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--peach) 50%, var(--sage) 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            transition: background 0.5s ease, color 0.5s ease;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        [data-theme="dark"] .cafe-name,
+        [data-theme="dark"] .section-title,
+        [data-theme="dark"] .item-name,
+        [data-theme="dark"] .nav-logo {
+            color: var(--soft-brown);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="dark"] .cafe-tagline,
+        [data-theme="dark"] .item-description {
+            color: var(--text-secondary);
+        }
+
+        [data-theme="dark"] .btn-primary,
+        [data-theme="dark"] .btn-secondary,
+        [data-theme="dark"] .category-btn {
+            color: var(--soft-brown);
+            font-weight: 600;
+        }
+
+        [data-theme="dark"] .glass {
+            background: var(--glass-bg);
+            border-color: var(--glass-border);
+        }
+
+        [data-theme="dark"] .hero-card {
+            background: rgba(50, 50, 50, 0.45);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+        }
+
+        [data-theme="dark"] .menu-item,
+        [data-theme="dark"] .map-container {
+            background: rgba(50, 50, 50, 0.5);
+        }
+
+        /* Glass Morphism Utility */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .glass:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Navigation */
+        .nav-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5rem;
+            color: var(--soft-brown);
+            font-weight: 400;
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            width: 48px;
+            height: 48px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.3rem;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .hamburger {
+            width: 48px;
+            height: 48px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .hamburger span {
+            width: 24px;
+            height: 2px;
+            background: var(--soft-brown);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(7px, 7px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Side Menu */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 320px;
+            height: 100vh;
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-left: 1px solid var(--glass-border);
+            z-index: 999;
+            padding: 6rem 2rem 2rem;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .side-menu.active {
+            right: 0;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .side-menu nav {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .side-menu a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            padding: 1rem;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .side-menu a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-5px);
+            color: var(--soft-brown);
+        }
+
+        .menu-icon {
+            font-size: 1.4rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=2000&auto=format&fit=crop') center/cover;
+            opacity: 0.4;
+            filter: grayscale(20%) blur(3px);
+        }
+        
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(166, 138, 119, 0.2) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 600px;
+            padding: 3rem;
+            animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hero-card {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 32px;
+            padding: 3rem 2.5rem;
+            box-shadow: 0 20px 60px rgba(166, 138, 119, 0.15);
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        .logo-circle {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(166, 138, 119, 0.3) 0%, rgba(201, 184, 168, 0.2) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 10px 40px rgba(166, 138, 119, 0.2);
+            backdrop-filter: blur(10px);
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        .logo-text {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.5rem;
+            color: var(--soft-brown);
+            font-style: italic;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-5px) rotate(2deg);
+            }
+        }
+
+        .cafe-name {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            color: var(--soft-brown);
+            margin-bottom: 1rem;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+        }
+
+        .cafe-tagline {
+            font-size: clamp(1rem, 3vw, 1.25rem);
+            color: #6B5D54;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 0.01em;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.02em;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1.5px solid var(--glass-border);
+            color: var(--soft-brown);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(166, 138, 119, 0.15);
+            backdrop-filter: blur(10px);
+            color: var(--soft-brown);
+            border: 1.5px solid rgba(166, 138, 119, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(166, 138, 119, 0.25);
+            transform: translateY(-4px);
+        }
+
+        /* Mascot */
+        .mascot {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            z-index: 100;
+            width: 80px;
+            height: 80px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .mascot-character {
+            width: 100%;
+            height: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: var(--shadow-soft);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .mascot-character:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--soft-brown);
+            text-align: center;
+            margin-bottom: 3rem;
+            letter-spacing: -0.01em;
+        }
+
+        /* Menu Section */
+        .menu-categories {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            padding: 0 1rem;
+        }
+
+        .category-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 16px;
+            color: var(--soft-brown);
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .menu-item {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 0.6s forwards;
+        }
+
+        .menu-item:nth-child(2) { animation-delay: 0.1s; }
+        .menu-item:nth-child(3) { animation-delay: 0.2s; }
+        .menu-item:nth-child(4) { animation-delay: 0.3s; }
+
+        .menu-item:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .item-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .item-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--soft-brown);
+            margin-bottom: 0.5rem;
+        }
+
+        .item-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.03);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .lightbox-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 48px;
+            height: 48px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        /* Map Section */
+        .map-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--glass-border);
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            padding: 2rem;
+        }
+
+        .map-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--soft-brown);
+            margin-bottom: 1.5rem;
+        }
+
+        .map-frame {
+            width: 100%;
+            height: 400px;
+            border-radius: 20px;
+            border: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .map-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* WhatsApp Float */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            width: 64px;
+            height: 64px;
+            background: rgba(37, 211, 102, 0.3);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(37, 211, 102, 0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(37, 211, 102, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 48px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-float svg {
+            width: 32px;
+            height: 32px;
+            fill: #25D366;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 8px 32px rgba(37, 211, 102, 0.3);
+            }
+            50% {
+                box-shadow: 0 8px 32px rgba(37, 211, 102, 0.6);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                min-height: 100vh;
+                padding: 1rem;
+            }
+
+            .hero-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .logo {
+                width: 100px;
+                height: 100px;
+                margin-bottom: 1.5rem;
+            }
+
+            .logo-text {
+                font-size: 2rem;
+            }
+
+            .cafe-name {
+                font-size: 2.5rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .cafe-tagline {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+                padding: 1.2rem 2rem;
+                font-size: 1rem;
+            }
+
+            section {
+                padding: 3rem 1.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
+
+            .menu-categories {
+                gap: 0.75rem;
+                margin-bottom: 2rem;
+            }
+
+            .category-btn {
+                padding: 0.85rem 1.25rem;
+                font-size: 0.85rem;
+                flex: 1;
+                min-width: auto;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .menu-item {
+                padding: 1.75rem;
+            }
+
+            .item-icon {
+                font-size: 2.25rem;
+            }
+
+            .item-name {
+                font-size: 1.25rem;
+            }
+
+            .item-description {
+                font-size: 0.9rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+
+            .gallery-item {
+                aspect-ratio: 4/3;
+            }
+
+            .side-menu {
+                width: 85vw;
+                max-width: 320px;
+            }
+
+            .side-menu a {
+                font-size: 1.1rem;
+                padding: 1.1rem;
+            }
+
+            .nav-header {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-logo {
+                font-size: 1.3rem;
+            }
+
+            .theme-toggle,
+            .hamburger {
+                width: 44px;
+                height: 44px;
+            }
+
+            .theme-toggle {
+                font-size: 1.2rem;
+            }
+
+            .map-container {
+                padding: 1.5rem;
+                border-radius: 24px;
+            }
+
+            .map-frame {
+                height: 300px;
+                border-radius: 16px;
+            }
+
+            .map-title {
+                font-size: 1.3rem;
+                margin-bottom: 1.25rem;
+            }
+
+            .map-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .map-actions .btn {
+                width: 100%;
+            }
+
+            .mascot {
+                width: 56px;
+                height: 56px;
+                bottom: 5.5rem;
+                left: 1rem;
+            }
+
+            .mascot-character {
+                font-size: 1.75rem;
+            }
+
+            .whatsapp-float {
+                width: 56px;
+                height: 56px;
+                bottom: 1.5rem;
+                right: 1rem;
+            }
+
+            .whatsapp-float svg {
+                width: 26px;
+                height: 26px;
+            }
+
+            .lightbox {
+                padding: 1rem;
+            }
+
+            .lightbox-close {
+                top: 1rem;
+                right: 1rem;
+                width: 44px;
+                height: 44px;
+            }
+
+            .decoration-1,
+            .decoration-2 {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cafe-name {
+                font-size: 2rem;
+            }
+
+            .category-btn {
+                font-size: 0.8rem;
+                padding: 0.75rem 1rem;
+            }
+
+            .menu-item {
+                padding: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+        }
+
+        /* Touch improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .btn,
+            .category-btn,
+            .theme-toggle,
+            .hamburger,
+            .gallery-item,
+            .whatsapp-float,
+            .mascot-character {
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .btn:active,
+            .category-btn:active {
+                transform: scale(0.97);
+            }
+
+            .gallery-item:active {
+                transform: scale(0.98);
+            }
+        }
+
+        /* Decorative Elements */
+        .decoration {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .decoration-1 {
+            top: 10%;
+            right: 5%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 229, 217, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(40px);
+        }
+
+        .decoration-2 {
+            bottom: 15%;
+            left: 10%;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(232, 243, 232, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(50px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative Background Elements -->
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+
+    <!-- Navigation Header -->
+    <header class="nav-header">
+        <div class="nav-logo">Luma</div>
+        <div class="nav-controls">
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+            <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Side Menu -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <div class="side-menu" id="sideMenu">
+        <nav>
+            <a href="#hero"><span class="menu-icon">🏠</span> Home</a>
+            <a href="#menu"><span class="menu-icon">☕</span> Menu</a>
+            <a href="#gallery"><span class="menu-icon">📸</span> Gallery</a>
+            <a href="#map"><span class="menu-icon">📍</span> Location</a>
+            <a href="https://wa.me/1234567890?text=Hey!%20I%20found%20your%20café%20online%20and%20would%20love%20to%20visit%20☕✨"><span class="menu-icon">💬</span> Contact</a>
+        </nav>
+    </div>
+
+    <!-- Mascot -->
+    <div class="mascot">
+        <div class="mascot-character" id="mascot">
+            ☕
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-card">
+                <div class="logo">
+                    <div class="logo-circle">
+                        <div class="logo-text">L</div>
+                    </div>
+                </div>
+                <h1 class="cafe-name">Luma Café</h1>
+                <p class="cafe-tagline">Coffee, calm & conversations.</p>
+                <div class="cta-buttons">
+                    <a href="#map" class="btn btn-primary">
+                        Visit Us
+                        <span>✨</span>
+                    </a>
+                    <a href="https://wa.me/1234567890?text=Hey!%20I%20found%20your%20café%20online%20and%20would%20love%20to%20visit%20☕✨" class="btn btn-secondary">
+                        Book on WhatsApp
+                        <span>💬</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu">
+        <h2 class="section-title">Our Menu</h2>
+        
+        <div class="menu-categories">
+            <button class="category-btn active" data-category="coffee">Coffee</button>
+            <button class="category-btn" data-category="matcha">Matcha</button>
+            <button class="category-btn" data-category="bakes">Bakes</button>
+            <button class="category-btn" data-category="specials">Specials</button>
+        </div>
+
+        <div class="menu-grid" id="menuGrid">
+            <!-- Menu items will be populated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <h2 class="section-title">Our Vibes 📸</h2>
+        
+        <div class="gallery-grid">
+            <div class="gallery-item" data-image="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&auto=format&fit=crop">
+                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&auto=format&fit=crop" alt="Coffee art">
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Latte Art</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-image="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=800&auto=format&fit=crop">
+                <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=800&auto=format&fit=crop" alt="Café interior">
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Cozy Corners</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-image="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop">
+                <img src="data:image/jpeg;base64,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" alt="Coffee beans">
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Fresh Beans</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-image="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&auto=format&fit=crop">
+                <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&auto=format&fit=crop" alt="Pastries">
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Fresh Bakes</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-image="https://images.unsplash.com/photo-1536599424071-0a2785f25013?w=800&auto=format&fit=crop">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxrY2igGZV6cX1GxW6bWtmvEBBRBTW3tx_XA&s" alt="Matcha latte">
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Matcha Magic</div>
+                </div>
+            </div>
+            <div class="gallery-item" data-image="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=800&auto=format&fit=crop">
+                <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=800&auto=format&fit=crop" alt="Café atmosphere">
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Chill Vibes</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section id="map">
+        <h2 class="section-title">Find us IRL ✨</h2>
+        
+        <div class="map-container">
+            <div class="map-title">Visit Our Café</div>
+            <iframe 
+                class="map-frame"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.2175948358964!2d-73.98823492346654!3d40.74844097138558!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1706825953836!5m2!1sen!2sus"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+            <div class="map-actions">
+                <a href="https://maps.google.com/?q=Empire+State+Building" target="_blank" class="btn btn-primary">
+                    Open in Maps
+                    <span>📍</span>
+                </a>
+                <a href="https://wa.me/1234567890?text=Hi!%20Can%20you%20share%20directions%20to%20your%20café?%20✨" class="btn btn-secondary">
+                    Get Directions
+                    <span>🗺️</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/1234567890?text=Hey!%20I%20found%20your%20café%20online%20and%20would%20love%20to%20visit%20☕✨" class="whatsapp-float" target="_blank">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 0C7.163 0 0 7.163 0 16c0 2.826.738 5.474 2.025 7.788L.051 31.951l8.326-2.027A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.455c-2.42 0-4.737-.634-6.748-1.827l-.485-.288-5.03 1.224 1.253-4.933-.316-.503A13.39 13.39 0 012.545 16c0-7.418 6.036-13.455 13.455-13.455S29.455 8.582 29.455 16 23.418 29.455 16 29.455zm7.394-10.073c-.406-.203-2.4-1.184-2.773-1.32-.373-.135-.644-.203-.915.203-.271.407-1.05 1.32-1.288 1.592-.237.271-.474.305-.88.102-.406-.203-1.713-.632-3.263-2.013-1.206-1.075-2.02-2.403-2.257-2.81-.237-.406-.025-.626.178-.828.183-.183.406-.474.61-.711.203-.237.271-.407.407-.678.135-.271.068-.508-.034-.711-.102-.203-.915-2.205-1.254-3.018-.331-.794-.668-.686-.915-.698-.237-.012-.508-.015-.78-.015s-.711.102-1.084.508c-.373.407-1.423 1.389-1.423 3.39 0 2.001 1.457 3.935 1.66 4.206.203.271 2.86 4.367 6.93 6.123.968.419 1.725.669 2.314.857.972.308 1.857.264 2.556.16.78-.117 2.4-.981 2.738-1.928.339-.947.339-1.758.237-1.928-.102-.169-.373-.271-.78-.474z"/>
+        </svg>
+    </a>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose">×</button>
+        <div class="lightbox-content">
+            <img id="lightboxImage" src="" alt="">
+        </div>
+    </div>
+
+    <script>
+        // Hamburger Menu
+        const hamburger = document.getElementById('hamburger');
+        const sideMenu = document.getElementById('sideMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            sideMenu.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+        });
+
+        menuOverlay.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            sideMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.side-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                sideMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+            });
+        });
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        // Check for saved theme preference
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+
+        themeToggle.addEventListener('click', () => {
+            const theme = html.getAttribute('data-theme');
+            const newTheme = theme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+            
+            // Animate the toggle
+            themeToggle.style.transform = 'scale(1.2) rotate(360deg)';
+            setTimeout(() => {
+                themeToggle.style.transform = 'scale(1) rotate(0deg)';
+            }, 300);
+        });
+
+        // Gallery Lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const imageSrc = item.dataset.image;
+                lightboxImage.src = imageSrc;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        lightboxClose.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Menu Data
+        const menuData = {
+            coffee: [
+                {
+                    icon: '☕',
+                    name: 'Velvet Latte',
+                    description: 'Silky smooth espresso with oat milk, topped with a delicate foam cloud'
+                },
+                {
+                    icon: '🤎',
+                    name: 'Cold Brew Cloud',
+                    description: 'Smooth cold brew with sweet cream swirls, served over ice'
+                },
+                {
+                    icon: '✨',
+                    name: 'Caramel Dreams',
+                    description: 'House espresso, caramel drizzle, and a hint of vanilla magic'
+                },
+                {
+                    icon: '🌙',
+                    name: 'Midnight Mocha',
+                    description: 'Rich dark chocolate and espresso, finished with cocoa dust'
+                }
+            ],
+            matcha: [
+                {
+                    icon: '🍵',
+                    name: 'Cloud Matcha',
+                    description: 'Premium ceremonial matcha whisked to perfection, pure and calming'
+                },
+                {
+                    icon: '🌸',
+                    name: 'Sakura Matcha Latte',
+                    description: 'Sweet matcha with cherry blossom notes and oat milk foam'
+                },
+                {
+                    icon: '🧊',
+                    name: 'Iced Matcha Float',
+                    description: 'Matcha over ice with vanilla cream on top, perfectly Instagrammable'
+                },
+                {
+                    icon: '🫧',
+                    name: 'Strawberry Matcha',
+                    description: 'Fresh strawberry puree meets matcha in a dreamy pink-green gradient'
+                }
+            ],
+            bakes: [
+                {
+                    icon: '🥐',
+                    name: 'Butter Croissant',
+                    description: 'Flaky, buttery layers baked fresh every morning, served warm'
+                },
+                {
+                    icon: '🍰',
+                    name: 'Pistachio Cake',
+                    description: 'Moist pistachio sponge with cream cheese frosting and crushed nuts'
+                },
+                {
+                    icon: '🧁',
+                    name: 'Matcha Muffin',
+                    description: 'Soft matcha muffin with white chocolate chips, lightly sweet'
+                },
+                {
+                    icon: '🍪',
+                    name: 'Brown Butter Cookie',
+                    description: 'Chewy cookies with caramelized brown butter and sea salt flakes'
+                }
+            ],
+            specials: [
+                {
+                    icon: '🌟',
+                    name: 'Lavender Honey Latte',
+                    description: 'Espresso with lavender syrup and local honey, topped with edible flowers'
+                },
+                {
+                    icon: '🍋',
+                    name: 'Yuzu Sparkle',
+                    description: 'Japanese yuzu, sparkling water, and a touch of honey over ice'
+                },
+                {
+                    icon: '🥥',
+                    name: 'Coconut Bliss',
+                    description: 'Coconut milk, espresso, and vanilla, served with toasted coconut flakes'
+                },
+                {
+                    icon: '🌺',
+                    name: 'Hibiscus Refresh',
+                    description: 'Cold hibiscus tea with fresh mint and citrus, naturally caffeine-free'
+                }
+            ]
+        };
+
+        // Current category
+        let currentCategory = 'coffee';
+
+        // Render menu items
+        function renderMenu(category) {
+            const menuGrid = document.getElementById('menuGrid');
+            const items = menuData[category];
+            
+            // Fade out
+            menuGrid.style.opacity = '0';
+            menuGrid.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                menuGrid.innerHTML = items.map(item => `
+                    <div class="menu-item glass">
+                        <div class="item-icon">${item.icon}</div>
+                        <h3 class="item-name">${item.name}</h3>
+                        <p class="item-description">${item.description}</p>
+                    </div>
+                `).join('');
+                
+                // Fade in
+                setTimeout(() => {
+                    menuGrid.style.opacity = '1';
+                    menuGrid.style.transform = 'translateY(0)';
+                }, 50);
+            }, 300);
+        }
+
+        // Category button handlers
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategory = btn.dataset.category;
+                renderMenu(currentCategory);
+            });
+        });
+
+        // Mascot interaction
+        const mascot = document.getElementById('mascot');
+        let mascotEmojis = ['☕', '✨', '🌸', '🫧', '💚'];
+        let currentEmoji = 0;
+
+        mascot.addEventListener('click', () => {
+            currentEmoji = (currentEmoji + 1) % mascotEmojis.length;
+            mascot.textContent = mascotEmojis[currentEmoji];
+            mascot.style.transform = 'scale(1.2) rotate(10deg)';
+            setTimeout(() => {
+                mascot.style.transform = 'scale(1) rotate(0deg)';
+            }, 300);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initial render
+        renderMenu(currentCategory);
+
+        // Add transition styles to menu grid
+        const menuGrid = document.getElementById('menuGrid');
+        menuGrid.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe sections
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
